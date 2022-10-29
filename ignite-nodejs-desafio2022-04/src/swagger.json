@@ -1,0 +1,236 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "User manager",
+    "description": "Allow users management by admins",
+    "version": "1.0.0",
+    "contact": {
+      "name": "vinics",
+      "email": "vinics.dr@gmail.com"
+    }
+  },
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Create a new user",
+        "description": "Creates a new user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "name": "John Doe",
+                  "email": "johndoe@website.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "User already exists"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Users"],
+        "summary": "Return all users",
+        "description": "Returns all registered users",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "header",
+            "description": "Admin user id",
+            "required": "true",
+            "schema": {
+              "type": "string",
+              "format": "$uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "admin": {
+                        "type": "boolean"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "updated_at": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "id": "508327b3-d652-4196-b97c-bb0118261c5c",
+                    "name": "John Doe",
+                    "email": "johndoe@website.com",
+                    "admin": false,
+                    "created_at": "2022-09-30T20:20:47.155Z",
+                    "updated_at": "2022-09-30T20:20:47.155Z"
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "User does not exists or is not Admin"
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Show user info",
+        "description": "Shows user info",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "ID of a registered user",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "$uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "508327b3-d652-4196-b97c-bb0118261c5c",
+                  "name": "John Doe",
+                  "email": "johndoe@website.com",
+                  "admin": false,
+                  "created_at": "2022-09-30T20:20:47.155Z",
+                  "updated_at": "2022-09-30T20:20:47.155Z"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}/admin": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Turns user into Admin",
+        "description": "Turns user into Admin",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "User id that should be changed to a admin",
+            "required": "true",
+            "schema": {
+              "type": "string",
+              "format": "$uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "508327b3-d652-4196-b97c-bb0118261c5c",
+                  "name": "John Doe",
+                  "email": "johndoe@website.com",
+                  "admin": true,
+                  "created_at": "2022-09-30T20:20:47.155Z",
+                  "updated_at": "2022-09-30T20:20:47.155Z"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User does not exists"
+          }
+        }
+      }
+    }
+  }
+}
